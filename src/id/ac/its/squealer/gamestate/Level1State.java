@@ -1,8 +1,9 @@
-package gamestate;
+package id.ac.its.squealer.gamestate;
 
-import id.ac.its.fppbof.squealer.GamePanel;
-import tilemap.*;
 import java.awt.*;
+
+import id.ac.its.squealer.main.GamePanel;
+import id.ac.its.squealer.tilemap.*;
 
 public class Level1State extends GameState {
 		

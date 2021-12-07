@@ -1,4 +1,4 @@
-package gamestate;
+package id.ac.its.squealer.gamestate;
 
 import java.util.ArrayList;
 

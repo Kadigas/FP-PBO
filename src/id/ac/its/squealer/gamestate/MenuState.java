@@ -1,8 +1,9 @@
-package gamestate;
+package id.ac.its.squealer.gamestate;
 
-import tilemap.Background;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+
+import id.ac.its.squealer.tilemap.Background;
 
 public class MenuState extends GameState{
 

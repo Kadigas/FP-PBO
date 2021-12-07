@@ -1,11 +1,10 @@
-package tilemap;
-
-import id.ac.its.fppbof.squealer.GamePanel;
-
+package id.ac.its.squealer.tilemap;
 
 import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
+
+import id.ac.its.squealer.main.GamePanel;
 
 
 public class Background {
