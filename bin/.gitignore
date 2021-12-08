@@ -1,6 +1,4 @@
-/Backgrounds/
-/HUD/
-/Maps/
-/Sprites/
-/Tilesets/
 /id/
+/tilemap/
+/gamestate/
+/Main/
