@@ -2,10 +2,12 @@ package id.ac.its.squealer.gamestate;
 
 import id.ac.its.squealer.tilemap.*;
 import id.ac.its.squealer.entity.*;
+import id.ac.its.squealer.entity.enemies.*;
 import id.ac.its.squealer.main.GamePanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class Level1State extends GameState {
 		
@@ -13,6 +15,10 @@ public class Level1State extends GameState {
 	private Background bg;
 	
 	private Player player;
+	
+	private ArrayList<Enemy> enemies;
+	
+	private HUD hud;
 	
 	public Level1State(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -32,6 +38,14 @@ public class Level1State extends GameState {
 		player = new Player(tileMap);
 		player.setPosition(100, 100);
 		
+		enemies = new ArrayList<Enemy>();
+		Slugger s;
+		s = new Slugger(tileMap);
+		s.setPosition(100, 100);
+		enemies.add(s);
+		
+		hud = new HUD(player);
+		
 	}
 	
 	
@@ -47,6 +61,15 @@ public class Level1State extends GameState {
 		// set background
 		bg.setPosition(tileMap.getx(), tileMap.gety());
 		
+		// attack enemies
+		player.checkAttack(enemies);
+		
+		// update enemies
+		for(int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).update();
+			if(enemies.get(i).isDead()) enemies.remove(i--);
+		}
+		
 	}
 	
 	public void draw(Graphics2D g) {
@@ -59,6 +82,14 @@ public class Level1State extends GameState {
 		
 		// draw player
 		player.draw(g);
+		
+		// draw enemies
+		for(int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).draw(g);
+		}
+		
+		// draw HUD
+		hud.draw(g);
 		
 	}
 	
