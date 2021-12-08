@@ -119,8 +119,8 @@ import id.ac.its.squealer.main.GamePanel;
 		}
 		
 		public int getTileSize() { return tileSize; }
-		public int getx() { return (int)x; }
-		public int gety() { return (int)y; }
+		public double getx() { return x; }
+		public double gety() { return y; }
 		public int getWidth() { return width; }
 		public int getHeight() { return height; }
 		
@@ -130,6 +130,8 @@ import id.ac.its.squealer.main.GamePanel;
 			int c = rc % numTilesAcross;
 			return tiles[r][c].getType();
 		}
+		
+		public void setTween(double d) { tween = d; }
 		
 		public void setPosition(double x, double y) {
 			
