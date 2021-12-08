@@ -1,4 +1,4 @@
-package tilemap;
+package id.ac.its.squealer.tilemap;
 
 import java.awt.image.BufferedImage;
 
