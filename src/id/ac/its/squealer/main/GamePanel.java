@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import id.ac.its.squealer.gamestate.GameStateManager;
 
-@SurpressWarnings("serial")
+@SuppressWarnings("serial")
 public class GamePanel extends JPanel 
 	implements Runnable, KeyListener{
 

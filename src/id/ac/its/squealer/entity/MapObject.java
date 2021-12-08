@@ -149,7 +149,7 @@ public abstract class MapObject {
 				dx = 0;
 				xtemp = (currCol + 1) * tileSize - cwidth / 2;
 			}
-			else {		// note for myself, richo cross-check this
+			else {
 				xtemp += dx;
 			}
 		}
