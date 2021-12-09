@@ -142,6 +142,63 @@ public class Player extends MapObject {
 		gliding = b;
 	}
 	
+	public void checkAttack(ArrayList<Enemy> enemies) {
+		
+		for(int i = 0; i < enemies.size(); i++) {
+			
+			Enemy e = enemies.get(i);
+			
+			// check scratch attack
+			if(scratching) {
+				if(facingRight) {
+					if(
+						e.getx() > x &&
+						e.getx() < x + scratchRange &&
+						e.gety() > y - height / 2 &&
+						e.gety() < y + height / 2
+					) {
+						e.hit(scratchDamage);
+					}
+				}
+				else {
+					if(
+						e.getx() < x &&
+						e.getx() > x - scratchRange &&
+						e.gety() < y + height / 2 &&
+						e.gety() > y - height / 2
+					) {
+						e.hit(scratchDamage);
+					}
+				}
+			}
+			
+			// check fireballs attack
+			
+			for(int j = 0; j < fireBalls.size(); j++) {
+				if(fireBalls.get(j).intersects(e)) {
+					e.hit(fireBallDamage);
+					fireBalls.get(j).setHit();
+					break;
+				}
+			}
+			
+			// check enemy collision
+			if(intersects(e)) {
+				hit(e.getDamage());
+			}
+		}
+		
+	}
+	
+	public void hit(int damage) {
+		if(flinching) return;
+		health -= damage;
+		if(health < 0) health = 0;
+		if(health == 0) dead = true;
+		flinching = true;
+		flinchTimer = System.nanoTime();
+	}
+	
 	private void getNextPosition() {
 		
 		// movement
@@ -236,6 +293,15 @@ public class Player extends MapObject {
 			}
 		}
 		
+		// check done flinching
+		if (flinching) {
+			long elapsed = 
+					(System.nanoTime() - flinchTimer) / 1000000;
+			if(elapsed > 1000) {
+				flinching = false;
+			}
+		}
+		
 		// set animation
 		if (scratching) {
 			if (currentAction != SCRATCHING) {
@@ -322,24 +388,7 @@ public class Player extends MapObject {
 			}
 		}
 		
-		if (facingRight) {
-			g.drawImage(
-				animation.getImage(),
-				(int) (x + xmap - width / 2),
-				(int) (y + ymap - height / 2),
-				null
-			);
-		}
-		else {
-			g.drawImage(
-				animation.getImage(),
-				(int) (x + xmap - width / 2 + width),
-				(int) (y + ymap - height / 2),
-				-width,
-				height,
-				null
-			);
-		}
+		super.draw(g);
 		
 	}
 	
