@@ -20,6 +20,7 @@ public class Level1State extends GameState {
 	private ArrayList<Explosion> explosions;
 	
 	private HUD hud;
+	private Clock clock;
 	
 	public Level1State(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -44,6 +45,8 @@ public class Level1State extends GameState {
 		explosions = new ArrayList<Explosion>();
 		
 		hud = new HUD(player);
+		clock = new Clock();
+		clock.start();
 		
 	}
 	
@@ -76,6 +79,9 @@ public class Level1State extends GameState {
 			GamePanel.WIDTH / 2 - player.getx(),
 			GamePanel.HEIGHT / 2 - player.gety()
 		);
+		if(player.isDead()) {
+			
+		}
 		
 		// set background
 		bg.setPosition(tileMap.getx(), tileMap.gety());
@@ -134,6 +140,8 @@ public class Level1State extends GameState {
 		// draw HUD
 		hud.draw(g);
 		
+		// draw clock
+		clock.draw(g);
 	}
 	
 	public void keyPressed(int k) {
