@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 
-public class Level1State extends GameState {
+public class Level3State extends GameState {
 	
 	private TileMap tileMap;
 	private Background bg;
@@ -26,7 +26,7 @@ public class Level1State extends GameState {
 	
 	private AudioPlayer bgMusic;
 	
-	public Level1State(GameStateManager gsm) {
+	public Level3State(GameStateManager gsm) {
 		this.gsm = gsm;
 		init();
 	}

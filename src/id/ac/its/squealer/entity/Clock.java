@@ -2,12 +2,16 @@ package id.ac.its.squealer.entity;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 public class Clock {
-	
 	Timer clock;
+	private BufferedImage image;
 	private int second, minute;
+	private Font font;
 	private StringBuilder string;
 	
 	public Clock() {
@@ -24,11 +28,24 @@ public class Clock {
 				}
 			}
 		);
+		try {
+			image = ImageIO.read(
+				getClass().getResourceAsStream(
+					"/Clock/clock.png"
+				)
+			);
+			
+			font = new Font("Arial", Font.PLAIN, 14);
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void draw(Graphics2D g) {
 		string = new StringBuilder();
-		g.setFont(new Font("Arial", Font.PLAIN, 14));
+		g.setFont(font);
 		g.setColor(Color.WHITE);
 		if(minute < 10)
 			string.append("0" + minute);
@@ -43,10 +60,11 @@ public class Clock {
 			string.append(second);
 		
 		g.drawString(string.toString(), 280, 25);
+		g.drawImage(image, 260, 12,
+                image.getWidth(null) / 14, image.getHeight(null) / 14, null);
 	}
 	
 	public void start() {
 		clock.start();
 	}
-	
 }

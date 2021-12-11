@@ -1,5 +1,6 @@
 package id.ac.its.squealer.gamestate;
 
+
 public abstract class GameState {
 	
 	protected GameStateManager gsm;

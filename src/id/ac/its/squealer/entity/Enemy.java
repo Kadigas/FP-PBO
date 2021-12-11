@@ -8,21 +8,30 @@ public class Enemy extends MapObject{
 	protected int maxHealth;
 	protected boolean dead;
 	protected int damage;
+	protected boolean remove;
+	
 	
 	protected boolean flinching;
 	protected long flinchTimer;
 	
-	public Enemy(TileMap tm) {
+	public Enemy(TileMap tm)
+	{
 		super(tm);
+		remove = false;
 	}
+	
 	
 	public boolean isDead() {
 		return dead;
 	}
-	
 	public int getDamage() {
 		return damage;
 	}
+	public boolean shouldRemove(){
+		return remove;
+	}
+	
+	
 	
 	public void hit(int damage) {
 		if(dead || flinching) return;
