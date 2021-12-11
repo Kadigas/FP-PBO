@@ -1,18 +1,20 @@
 package id.ac.its.squealer.gamestate;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 
 import id.ac.its.squealer.tilemap.Background;
 
-public class MenuState extends GameState{
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
+
+public class MenuState extends GameState {
+	
 	private Background bg;
 	
 	private int currentChoice = 0;
 	private String[] options = {
 		"Start",
-		"Help",
+		"About",
 		"Quit"
 	};
 	
@@ -59,7 +61,7 @@ public class MenuState extends GameState{
 		// draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		g.drawString("Squealer", 100, 70);
+		g.drawString("SQUEALER", 100, 70);
 		
 		// draw menu options
 		g.setFont(font);

@@ -5,13 +5,15 @@ import id.ac.its.squealer.tilemap.TileMap;
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
+
 import javax.imageio.ImageIO;
 
-public class Slugger extends Enemy{
+public class Slugger extends Enemy {
 	
 	private BufferedImage[] sprites;
 	
 	public Slugger(TileMap tm) {
+		
 		super(tm);
 		
 		moveSpeed = 0.3;
@@ -27,10 +29,10 @@ public class Slugger extends Enemy{
 		health = maxHealth = 2;
 		damage = 1;
 		
-		//load sprites
+		// load sprites
 		try {
 			
-			BufferedImage spritesheets = ImageIO.read(
+			BufferedImage spritesheet = ImageIO.read(
 				getClass().getResourceAsStream(
 					"/Sprites/Enemies/slugger.gif"
 				)
@@ -38,13 +40,14 @@ public class Slugger extends Enemy{
 			
 			sprites = new BufferedImage[3];
 			for(int i = 0; i < sprites.length; i++) {
-				sprites[i] = spritesheets.getSubimage(
-						i * width,
-						0,
-						width,
-						height
+				sprites[i] = spritesheet.getSubimage(
+					i * width,
+					0,
+					width,
+					height
 				);
 			}
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -56,19 +59,21 @@ public class Slugger extends Enemy{
 		
 		right = true;
 		facingRight = true;
+		
 	}
 	
 	private void getNextPosition() {
+		
 		// movement
-		if (left) {
+		if(left) {
 			dx -= moveSpeed;
-			if (dx < -maxSpeed) {
+			if(dx < -maxSpeed) {
 				dx = -maxSpeed;
 			}
 		}
-		else if (right) {
+		else if(right) {
 			dx += moveSpeed;
-			if (dx > maxSpeed) {
+			if(dx > maxSpeed) {
 				dx = maxSpeed;
 			}
 		}
@@ -77,6 +82,7 @@ public class Slugger extends Enemy{
 		if(falling) {
 			dy += fallSpeed;
 		}
+		
 	}
 	
 	public void update() {
@@ -86,22 +92,21 @@ public class Slugger extends Enemy{
 		checkTileMapCollision();
 		setPosition(xtemp, ytemp);
 		
-		// flinching
+		// check flinching
 		if(flinching) {
-			long elapsed = 
-					(System.nanoTime() - flinchTimer) / 1000000;
+			long elapsed =
+				(System.nanoTime() - flinchTimer) / 1000000;
 			if(elapsed > 400) {
 				flinching = false;
 			}
 		}
 		
-		// if hits a wall, go to other direction
+		// if it hits a wall, go other direction
 		if(right && dx == 0) {
 			right = false;
 			left = true;
 			facingRight = false;
 		}
-		
 		else if(left && dx == 0) {
 			right = true;
 			left = false;
@@ -118,6 +123,9 @@ public class Slugger extends Enemy{
 		//if(notOnScreen()) return;
 		
 		setMapPosition();
+		
 		super.draw(g);
+		
 	}
+	
 }

@@ -4,13 +4,15 @@ import id.ac.its.squealer.tilemap.*;
 import id.ac.its.squealer.entity.*;
 import id.ac.its.squealer.entity.enemies.*;
 import id.ac.its.squealer.main.GamePanel;
+import id.ac.its.squealer.audio.AudioPlayer;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+
 public class Level1State extends GameState {
-		
+	
 	private TileMap tileMap;
 	private Background bg;
 	
@@ -20,6 +22,9 @@ public class Level1State extends GameState {
 	private ArrayList<Explosion> explosions;
 	
 	private HUD hud;
+	private Clock clock;
+	
+	private AudioPlayer bgMusic;
 	
 	public Level1State(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -44,6 +49,11 @@ public class Level1State extends GameState {
 		explosions = new ArrayList<Explosion>();
 		
 		hud = new HUD(player);
+		clock = new Clock();
+		clock.start();
+		
+		bgMusic = new AudioPlayer("/Music/level1-1.mp3");
+		bgMusic.play();
 		
 	}
 	
@@ -59,7 +69,6 @@ public class Level1State extends GameState {
 			new Point(1680, 200),
 			new Point(1800, 200)
 		};
-		
 		for(int i = 0; i < points.length; i++) {
 			s = new Slugger(tileMap);
 			s.setPosition(points[i].x, points[i].y);
@@ -83,22 +92,22 @@ public class Level1State extends GameState {
 		// attack enemies
 		player.checkAttack(enemies);
 		
-		// update enemies
+		// update all enemies
 		for(int i = 0; i < enemies.size(); i++) {
 			Enemy e = enemies.get(i);
 			e.update();
 			if(e.isDead()) {
 				enemies.remove(i);
 				i--;
-				explosions.add(new Explosion(e.getx(), e.gety()));
+				explosions.add(
+					new Explosion(e.getx(), e.gety()));
 			}
 		}
 		
 		// update explosions
 		for(int i = 0; i < explosions.size(); i++) {
-			Explosion ex = explosions.get(i);
-			ex.update();
-			if(ex.shouldRemove()) {
+			explosions.get(i).update();
+			if(explosions.get(i).shouldRemove()) {
 				explosions.remove(i);
 				i--;
 			}
@@ -125,34 +134,35 @@ public class Level1State extends GameState {
 		// draw explosions
 		for(int i = 0; i < explosions.size(); i++) {
 			explosions.get(i).setMapPosition(
-				(int)tileMap.getx(), 
-				(int)tileMap.gety()
-			);
+				(int)tileMap.getx(), (int)tileMap.gety());
 			explosions.get(i).draw(g);
 		}
 		
-		// draw HUD
+		// draw hud
 		hud.draw(g);
 		
+		// draw clock
+		clock.draw(g);
+				
 	}
 	
 	public void keyPressed(int k) {
-		if (k == KeyEvent.VK_LEFT) player.setLeft(true);
-		if (k == KeyEvent.VK_RIGHT) player.setRight(true);
-		if (k == KeyEvent.VK_UP) player.setUp(true);
-		if (k == KeyEvent.VK_DOWN) player.setDown(true);
-		if (k == KeyEvent.VK_W) player.setJumping(true);
-		if (k == KeyEvent.VK_E) player.setGliding(true);
-		if (k == KeyEvent.VK_R) player.setScratching();
-		if (k == KeyEvent.VK_F) player.setFiring();
+		if(k == KeyEvent.VK_LEFT) player.setLeft(true);
+		if(k == KeyEvent.VK_RIGHT) player.setRight(true);
+		if(k == KeyEvent.VK_UP) player.setUp(true);
+		if(k == KeyEvent.VK_DOWN) player.setDown(true);
+		if(k == KeyEvent.VK_W) player.setJumping(true);
+		if(k == KeyEvent.VK_E) player.setGliding(true);
+		if(k == KeyEvent.VK_R) player.setScratching();
+		if(k == KeyEvent.VK_F) player.setFiring();
 	}
 	
 	public void keyReleased(int k) {
-		if (k == KeyEvent.VK_LEFT) player.setLeft(false);
-		if (k == KeyEvent.VK_RIGHT) player.setRight(false);
-		if (k == KeyEvent.VK_UP) player.setUp(false);
-		if (k == KeyEvent.VK_DOWN) player.setDown(false);
-		if (k == KeyEvent.VK_W) player.setJumping(false);
-		if (k == KeyEvent.VK_E) player.setGliding(false);
+		if(k == KeyEvent.VK_LEFT) player.setLeft(false);
+		if(k == KeyEvent.VK_RIGHT) player.setRight(false);
+		if(k == KeyEvent.VK_UP) player.setUp(false);
+		if(k == KeyEvent.VK_DOWN) player.setDown(false);
+		if(k == KeyEvent.VK_W) player.setJumping(false);
+		if(k == KeyEvent.VK_E) player.setGliding(false);
 	}
 }
