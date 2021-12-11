@@ -35,7 +35,6 @@ public class AudioPlayer {
 		
 	}
 	
-	
 	//Audio behavior
 	public void play() 
 	{

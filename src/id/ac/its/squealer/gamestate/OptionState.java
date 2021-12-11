@@ -4,30 +4,20 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-
-import id.ac.its.squealer.audio.AudioPlayer;
 import id.ac.its.squealer.tilemap.Background;
 
-public class AboutState extends GameState {
+public class OptionState extends GameState {
 	
 	private Background bg;
 	private Font font;
-	private AudioPlayer bgMusic, sfx;
 	private String[] about = {
-			"ABOUT SQUEALER",
-			" ",
-			"SQUEALER is a Platformers game",
-			"built for an OOP Final Project",
-			" ",
-			"by",
-			"Hemakesha Ramadhani Heriqbaldi - 5025201209",
-			"Naufal Faadhilah - 5025201221",
-			"Made Rianja Richo Dainino - 5025201236",
-			"Andhika Ditya Bagaskara D. - 5025201096",
+			"1",
+			"2",
+			"3",
 			"BACK"
 	};
 	
-	public AboutState(GameStateManager gsm) {
+	public OptionState(GameStateManager gsm) {
 		this.gsm = gsm;
         
 		try 
@@ -39,14 +29,9 @@ public class AboutState extends GameState {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		sfx = new AudioPlayer("/SFX/menuPressed.mp3");
-		init();
 	}
 	
-	public void init() {
-		bgMusic = new AudioPlayer("/Music/about.mp3");
-		bgMusic.play();
-	}
+	public void init() {}
 	
 	public void update() {
 		bg.update();
@@ -75,8 +60,6 @@ public class AboutState extends GameState {
 	public void keyPressed(int k) {
 		if(k == KeyEvent.VK_ENTER){
 			gsm.setState(GameStateManager.MENUSTATE);
-			sfx.play();
-			bgMusic.close();
 		}
 	}
 	

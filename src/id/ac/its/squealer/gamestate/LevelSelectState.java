@@ -1,42 +1,36 @@
 package id.ac.its.squealer.gamestate;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import javax.imageio.ImageIO;
 import id.ac.its.squealer.audio.AudioPlayer;
-import tilemap.Background;
+import id.ac.its.squealer.tilemap.Background;
 
-public class MenuState extends GameState{
-
+public class LevelSelectState extends GameState {
+	
 	private Background bg;
-	private BufferedImage gameTitle;
+	private Font font;
+	private int currentChoice = 0;
 	private AudioPlayer bgMusic;
 	private HashMap<String, AudioPlayer> sfx;
 	
-	private int currentChoice = 0;
-	private String[] options = {
-		"Play",
-		"Option",
-		"About",
-		"Quit"
+	private String[] level = {
+			"1",
+			"2",
+			"3",
+			"BACK"
 	};
 	
-	private Font font;
-	
-	public MenuState(GameStateManager gsm) {
+	public LevelSelectState(GameStateManager gsm) {
 		this.gsm = gsm;
         
 		try 
-		{
-			gameTitle = ImageIO.read(getClass().getResourceAsStream("/HUD/gameTitle.png"));
-			
-			bg = new Background("/Backgrounds/menubg.gif", 1);
-			bg.setVector(-0.1, 0);
-			
-			font = new Font("Arial", Font.PLAIN, 12);
+		{	
+			bg = new Background("/Backgrounds/aboutbg.jpg", 1);
+			font = new Font("Arial", Font.PLAIN, 24);
 		}
 		
 		catch(Exception e) {
@@ -49,7 +43,7 @@ public class MenuState extends GameState{
 	}
 	
 	public void init() {
-		bgMusic = new AudioPlayer("/Music/bgMenu.mp3");
+		bgMusic = new AudioPlayer("/Music/select.mp3");
 		bgMusic.play();
 	}
 	
@@ -63,13 +57,9 @@ public class MenuState extends GameState{
 		bg.draw(g);
 		
 		// draw title
-         g.drawImage(gameTitle, 0, 30,
-                 gameTitle.getWidth(null) / 4, gameTitle.getHeight(null) / 4, null);
-
 		
-		// draw menu options
 		g.setFont(font);
-		for(int i = 0; i < options.length; i++) {
+		for(int i = 0; i < level.length; i++) {
 			if(i == currentChoice) 
 			{
 				g.setColor(Color.RED);
@@ -77,20 +67,23 @@ public class MenuState extends GameState{
 			else {
 				g.setColor(Color.LIGHT_GRAY);
 			}
-			g.drawString(options[i], 145, 160 + i * 15);
+			
+			if(i < level.length-1)
+				g.drawString(level[i], 145, 50 + i * 70);
+			else
+				g.drawString(level[i], 250, 230);
 		}
-		
 	}
 	
 	private void select() {
 		if(currentChoice == 0) {
-			gsm.setState(GameStateManager.LEVELSELECTSTATE);
+			gsm.setState(GameStateManager.LEVEL1STATE);
 		}
 		if(currentChoice == 1) {
-			gsm.setState(GameStateManager.OPTIONSTATE);
+			gsm.setState(GameStateManager.LEVEL2STATE);
 		}
 		if(currentChoice == 2) {
-			gsm.setState(GameStateManager.ABOUTSTATE);
+			gsm.setState(GameStateManager.LEVEL3STATE);
 		}
 		if(currentChoice == 3) {
 			System.exit(0);
@@ -107,13 +100,13 @@ public class MenuState extends GameState{
 			sfx.get("updown").play();
 			currentChoice--;
 			if(currentChoice == -1) {
-				currentChoice = options.length - 1;
+				currentChoice = level.length - 1;
 			}
 		}
 		if(k == KeyEvent.VK_DOWN) {
 			sfx.get("updown").play();
 			currentChoice++;
-			if(currentChoice == options.length) {
+			if(currentChoice == level.length) {
 				currentChoice = 0;
 			}
 		}
