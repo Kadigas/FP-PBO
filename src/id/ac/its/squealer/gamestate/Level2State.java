@@ -61,7 +61,7 @@ public class Level2State extends GameState {
 		
 		enemies = new ArrayList<Enemy>();
 		
-		Slugger s;
+		FarmerMelee s;
 		Point[] points = new Point[] {
 			new Point(200, 100),
 			new Point(860, 200),
@@ -70,7 +70,7 @@ public class Level2State extends GameState {
 			new Point(1800, 200)
 		};
 		for(int i = 0; i < points.length; i++) {
-			s = new Slugger(tileMap);
+			s = new FarmerMelee(tileMap);
 			s.setPosition(points[i].x, points[i].y);
 			enemies.add(s);
 		}

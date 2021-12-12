@@ -86,7 +86,7 @@ public class LevelSelectState extends GameState {
 			gsm.setState(GameStateManager.LEVEL3STATE);
 		}
 		if(currentChoice == 3) {
-			System.exit(0);
+			gsm.setState(GameStateManager.MENUSTATE);
 		}
 		bgMusic.close();
 	}
