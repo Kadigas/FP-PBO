@@ -14,7 +14,7 @@ public class AboutState extends GameState {
 	private Font font;
 	private AudioPlayer bgMusic, sfx;
 	private String[] about = {
-			"ABOUT SQUEALER",
+			"ABOUT US",
 			" ",
 			"SQUEALER is a Platformers game",
 			"built for an OOP Final Project",
@@ -74,8 +74,8 @@ public class AboutState extends GameState {
 	
 	public void keyPressed(int k) {
 		if(k == KeyEvent.VK_ENTER){
-			gsm.setState(GameStateManager.MENUSTATE);
 			sfx.play();
+			gsm.setState(GameStateManager.MENUSTATE);
 			bgMusic.close();
 		}
 	}
