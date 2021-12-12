@@ -16,6 +16,9 @@ public class AboutState extends GameState {
 	private String[] about = {
 			"ABOUT US",
 			" ",
+			"Join Squealer's bizzare adventure and become the",
+			"first pig that passes through dimensions ever!",
+			" ",
 			"SQUEALER is a Platformers game",
 			"built for an OOP Final Project",
 			" ",
@@ -67,7 +70,7 @@ public class AboutState extends GameState {
 			}
 			else {
 				g.setColor(Color.RED);
-				g.drawString(about[i], 145, 200);
+				g.drawString(about[i], 145, 220);
 			}
 		}
 	}
