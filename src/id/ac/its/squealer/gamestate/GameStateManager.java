@@ -14,7 +14,8 @@ public class GameStateManager {
 	public static final int LEVEL1STATE = 4;
 	public static final int LEVEL2STATE = 5;
 	public static final int LEVEL3STATE = 6;
-	public static final int NUMGAMESTATES = 7;
+	public static final int HIGHSCORESTATE = 7;
+	public static final int NUMGAMESTATES = 8;
 	
 	public GameStateManager() {
 		
@@ -41,6 +42,8 @@ public class GameStateManager {
 			gameStates[state] = new Level2State(this);
 		if(state == LEVEL3STATE)
 			gameStates[state] = new Level3State(this);
+		if(state == HIGHSCORESTATE)
+			gameStates[state] = new HighScoreState(this);
 	}
 	
 	private void unloadState(int state) {

@@ -8,47 +8,41 @@ import java.awt.event.KeyEvent;
 import id.ac.its.squealer.audio.AudioPlayer;
 import id.ac.its.squealer.tilemap.Background;
 
-public class AboutState extends GameState {
+public class HighScoreState extends GameState {
 	
 	private Background bg;
 	private Font font;
-	private AudioPlayer bgMusic, sfx;
+	private AudioPlayer bgMusic;
 	private String[] about = {
-			"ABOUT US",
-			" ",
-			"Join Squealer's bizzare adventure and become the",
-			"first pig that passes through dimensions ever!",
-			" ",
-			"SQUEALER is a Platformers game",
-			"built for an OOP Final Project",
-			" ",
-			"by",
-			"Hemakesha Ramadhani Heriqbaldi - 5025201209",
-			"Naufal Faadhilah - 5025201221",
-			"Made Rianja Richo Dainino - 5025201236",
-			"Andhika Ditya Bagaskara D. - 5025201096",
+			"HIGH SCORE",
+			"LEVEL 1",
+			"		00:38",
+			"LEVEL 2",
+			"		02:15",
+			"LEVEL 3",
+			"		03:19",
 			"BACK"
 	};
 	
-	public AboutState(GameStateManager gsm) {
+	public HighScoreState(GameStateManager gsm) {
 		this.gsm = gsm;
         
 		try 
 		{	
 			bg = new Background("/Backgrounds/aboutbg.jpg", 1);
-			font = new Font("Arial", Font.PLAIN, 12);
+			font = new Font("Arial", Font.BOLD, 12);
 		}
 		
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		sfx = new AudioPlayer("/SFX/menuPressed.mp3");
+		
 		init();
 	}
 	
 	public void init() {
-		bgMusic = new AudioPlayer("/Music/about.mp3");
-		bgMusic.bgplay();
+		bgMusic = new AudioPlayer("/Music/highscore.mp3");
+		bgMusic.play();
 	}
 	
 	public void update() {
@@ -66,7 +60,7 @@ public class AboutState extends GameState {
 		for(int i = 0; i < about.length; i++) {	
 			if(i != about.length-1) {
 				g.setColor(Color.WHITE);
-				g.drawString(about[i], 15, 15 + i * 15);
+				g.drawString(about[i], 15, 15 + i * 30);
 			}
 			else {
 				g.setColor(Color.RED);
@@ -77,8 +71,7 @@ public class AboutState extends GameState {
 	
 	public void keyPressed(int k) {
 		if(k == KeyEvent.VK_ENTER){
-			sfx.play();
-			gsm.setState(GameStateManager.MENUSTATE);
+			gsm.setState(GameStateManager.LEVELSELECTSTATE);
 			bgMusic.close();
 		}
 	}

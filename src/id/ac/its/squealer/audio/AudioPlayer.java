@@ -44,6 +44,11 @@ public class AudioPlayer {
 		clip.start();
 	}
 	
+	public void bgplay() {
+		play();
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+	}
+	
 	public void stop() 
 	{
 		if(clip.isRunning()) clip.stop();
