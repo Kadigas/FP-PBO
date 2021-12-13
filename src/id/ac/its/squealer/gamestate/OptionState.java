@@ -11,9 +11,7 @@ public class OptionState extends GameState {
 	private Background bg;
 	private Font font;
 	private String[] about = {
-			"1",
-			"2",
-			"3",
+			"VOLUME",
 			"BACK"
 	};
 	
@@ -48,11 +46,11 @@ public class OptionState extends GameState {
 		for(int i = 0; i < about.length; i++) {	
 			if(i != about.length-1) {
 				g.setColor(Color.WHITE);
-				g.drawString(about[i], 15, 15 + i * 15);
+				g.drawString(about[i], 126, 100 + i * 15);
 			}
 			else {
 				g.setColor(Color.RED);
-				g.drawString(about[i], 145, 200);
+				g.drawString(about[i], 135, 200);
 			}
 		}
 	}

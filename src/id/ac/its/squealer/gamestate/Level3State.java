@@ -52,8 +52,8 @@ public class Level3State extends GameState {
 		clock = new Clock();
 		clock.start();
 		
-		bgMusic = new AudioPlayer("/Music/level1-1.mp3");
-		bgMusic.play();
+		bgMusic = new AudioPlayer("/Music/level3.mp3");
+		bgMusic.bgplay();
 		
 	}
 	
