@@ -50,7 +50,7 @@ public class MenuState extends GameState{
 	
 	public void init() {
 		bgMusic = new AudioPlayer("/Music/bgMenu.mp3");
-		bgMusic.play();
+		bgMusic.bgplay();
 	}
 	
 	public void update() {

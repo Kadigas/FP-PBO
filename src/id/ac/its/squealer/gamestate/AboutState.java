@@ -48,7 +48,7 @@ public class AboutState extends GameState {
 	
 	public void init() {
 		bgMusic = new AudioPlayer("/Music/about.mp3");
-		bgMusic.play();
+		bgMusic.bgplay();
 	}
 	
 	public void update() {
