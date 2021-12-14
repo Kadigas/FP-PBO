@@ -8,13 +8,17 @@ import id.ac.its.squealer.audio.AudioPlayer;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 
 public class Level2State extends GameState {
 	
 	private TileMap tileMap;
 	private Background bg;
+	private BufferedImage pauseScreen;
 	
 	private Player player;
 	
@@ -25,6 +29,15 @@ public class Level2State extends GameState {
 	private Clock clock;
 	
 	private AudioPlayer bgMusic;
+	
+	private static boolean pause = false;
+	
+	private String[] notification = {
+			"Paused",
+			"Press ESC to resume"
+	};
+	
+	private Font font1, font2;
 	
 	public Level2State(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -40,6 +53,16 @@ public class Level2State extends GameState {
 		tileMap.setTween(1);
 		
 		bg = new Background("/Backgrounds/grassbg1.gif", 0.1);
+		
+		try {
+			pauseScreen = ImageIO.read(getClass().getResourceAsStream("/Backgrounds/pause.png"));
+			font1 = new Font("Arial", Font.PLAIN, 36);
+			font2 = new Font("Arial", Font.PLAIN, 12);
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		player = new Player(tileMap);
 		player.setPosition(100, 100);
@@ -126,6 +149,7 @@ public class Level2State extends GameState {
 		// draw player
 		player.draw(g);
 		
+		
 		// draw enemies
 		for(int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).draw(g);
@@ -143,6 +167,16 @@ public class Level2State extends GameState {
 		
 		// draw clock
 		clock.draw(g);
+		
+		if(pause) {
+			g.drawImage(pauseScreen, 0, 0,
+	                 pauseScreen.getWidth(null), pauseScreen.getHeight(null), null);
+			g.setFont(font1);
+			g.setColor(Color.WHITE);
+			g.drawString(notification[0], 100, 120);
+			g.setFont(font2);
+			g.drawString(notification[1], 100, 150);
+		}
 				
 	}
 	
@@ -155,6 +189,16 @@ public class Level2State extends GameState {
 		if(k == KeyEvent.VK_E) player.setGliding(true);
 		if(k == KeyEvent.VK_R) player.setScratching();
 		if(k == KeyEvent.VK_F) player.setFiring();
+		if(k == KeyEvent.VK_ESCAPE) {
+			if(!pause) {
+				pause = true;
+				clock.stop();
+			}
+			else {
+				pause = false;
+				clock.start();
+			}
+		}
 	}
 	
 	public void keyReleased(int k) {

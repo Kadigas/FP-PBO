@@ -67,4 +67,8 @@ public class Clock {
 	public void start() {
 		clock.start();
 	}
+	
+	public void stop() {
+		clock.stop();
+	}
 }
