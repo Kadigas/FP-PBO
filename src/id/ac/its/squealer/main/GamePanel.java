@@ -19,6 +19,7 @@ public class GamePanel extends JPanel
 	// game thread
 	private Thread thread;
 	private boolean running;
+	public boolean pause = false;
 	private int FPS = 60;
 	private long targetTime = 1000 / FPS;
 	
@@ -70,6 +71,17 @@ public class GamePanel extends JPanel
 		
 		// game loop
 		while(running) {
+			if(pause) {
+				try {
+					draw();
+					drawToScreen();
+					Thread.sleep(1000);
+					continue;
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
 			
 			start = System.nanoTime();
 			
@@ -110,6 +122,13 @@ public class GamePanel extends JPanel
 	public void keyTyped(KeyEvent key) {}
 	public void keyPressed(KeyEvent key) {
 		gsm.keyPressed(key.getKeyCode());
+		int keyCode = key.getKeyCode();
+		if(keyCode == KeyEvent.VK_ESCAPE) {
+			if(!pause)
+				pause = true;
+			else
+				pause = false;
+		}
 	}
 	public void keyReleased(KeyEvent key) {
 		gsm.keyReleased(key.getKeyCode());

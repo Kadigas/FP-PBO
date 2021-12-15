@@ -11,8 +11,8 @@ import id.ac.its.squealer.tilemap.Background;
 public class HighScoreState extends GameState {
 	
 	private Background bg;
-	private Font font;
-	private AudioPlayer bgMusic;
+	private Font font1, font2;
+	private AudioPlayer bgMusic, sfx;
 	private String[] about = {
 			"HIGH SCORE",
 			"LEVEL 1",
@@ -30,13 +30,14 @@ public class HighScoreState extends GameState {
 		try 
 		{	
 			bg = new Background("/Backgrounds/aboutbg.jpg", 1);
-			font = new Font("Arial", Font.BOLD, 12);
+			font1 = new Font("Arial", Font.BOLD, 12);
+			font2 = new Font("Arial", Font.PLAIN, 12);
 		}
 		
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+		sfx = new AudioPlayer("/SFX/menuPressed.mp3");
 		init();
 	}
 	
@@ -55,12 +56,14 @@ public class HighScoreState extends GameState {
 		bg.draw(g);
 		
 		// draw title
-		
-		g.setFont(font);
-		for(int i = 0; i < about.length; i++) {	
+		g.setFont(font1);
+		g.setColor(Color.WHITE);
+		g.drawString(about[0], 125, 20);
+		g.setFont(font2);
+		for(int i = 1; i < about.length; i++) {	
 			if(i != about.length-1) {
 				g.setColor(Color.WHITE);
-				g.drawString(about[i], 15, 15 + i * 30);
+				g.drawString(about[i], 15, 20 + i * 30);
 			}
 			else {
 				g.setColor(Color.RED);
@@ -71,6 +74,7 @@ public class HighScoreState extends GameState {
 	
 	public void keyPressed(int k) {
 		if(k == KeyEvent.VK_ENTER){
+			sfx.play();
 			gsm.setState(GameStateManager.LEVELSELECTSTATE);
 			bgMusic.close();
 		}

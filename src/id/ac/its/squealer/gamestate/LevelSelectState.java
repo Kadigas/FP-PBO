@@ -91,7 +91,7 @@ public class LevelSelectState extends GameState {
 				g.setColor(Color.RED);
 			}
 			else {
-				g.setColor(Color.BLACK);
+				g.setColor(Color.WHITE);
 			}
 			
 			if(i == level.length-2)
@@ -160,7 +160,6 @@ public class LevelSelectState extends GameState {
 			else
 				currentChoice = 2;
 		}
-		draw(null);
 	}
 	
 	public void keyReleased(int k) {}
