@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.io.*;
+import java.nio.*;
+import java.nio.file.Paths;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 import id.ac.its.squealer.audio.AudioPlayer;
 import id.ac.its.squealer.tilemap.Background;
@@ -16,13 +21,11 @@ public class HighScoreState extends GameState {
 	private String[] about = {
 			"HIGH SCORE",
 			"LEVEL 1",
-			"		00:38",
 			"LEVEL 2",
-			"		02:15",
 			"LEVEL 3",
-			"		03:19",
 			"BACK"
 	};
+	private String[] scores;
 	
 	public HighScoreState(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -55,6 +58,9 @@ public class HighScoreState extends GameState {
 		// draw bg
 		bg.draw(g);
 		
+		// read stored high score
+		//getHighScore();  there is a bug here
+		
 		// draw title
 		g.setFont(font1);
 		g.setColor(Color.WHITE);
@@ -63,7 +69,7 @@ public class HighScoreState extends GameState {
 		for(int i = 1; i < about.length; i++) {	
 			if(i != about.length-1) {
 				g.setColor(Color.WHITE);
-				g.drawString(about[i], 15, 20 + i * 30);
+				g.drawString(about[i], 15, -10 + i * 60);
 			}
 			else {
 				g.setColor(Color.RED);
@@ -81,5 +87,27 @@ public class HighScoreState extends GameState {
 	}
 	
 	public void keyReleased(int k) {}
-		
+	
+	private void getHighScore() {
+		scores = new String[3];
+		try 
+		{
+			ObjectInputStream level1File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level1.txt"));
+			ObjectInputStream level2File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level2.txt"));
+			ObjectInputStream level3File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level3.txt"));
+			
+			scores[0] = level1File.readObject().toString();
+			scores[1] = level2File.readObject().toString();
+			scores[2] = level3File.readObject().toString();
+			
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		System.out.println(scores);
+	}
+	
 }

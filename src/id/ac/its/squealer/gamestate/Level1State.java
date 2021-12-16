@@ -120,6 +120,7 @@ public class Level1State extends GameState {
 			Enemy e = enemies.get(i);
 			e.update();
 			if(e.isDead()) {
+				clock.reduceTime(2);
 				enemies.remove(i);
 				i--;
 				explosions.add(
