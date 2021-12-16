@@ -91,7 +91,7 @@ public class LevelSelectState extends GameState {
 				g.setColor(Color.RED);
 			}
 			else {
-				g.setColor(Color.BLACK);
+				g.setColor(Color.WHITE);
 			}
 			
 			if(i == level.length-2)

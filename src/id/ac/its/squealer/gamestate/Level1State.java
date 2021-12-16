@@ -24,6 +24,12 @@ public class Level1State extends GameState {
 	private HUD hud;
 	private Clock clock;
 	
+	private boolean blockInput = false;
+	private int eventCount = 0;
+	private ArrayList<Rectangle> tb;
+	private boolean eventFinish;
+	private boolean eventDead;
+	
 	private AudioPlayer bgMusic;
 	
 	public Level1State(GameStateManager gsm) {
@@ -43,6 +49,8 @@ public class Level1State extends GameState {
 		
 		player = new Player(tileMap);
 		player.setPosition(100, 100);
+		player.setHealth(PlayerSave.getHealth());
+		player.setTime(PlayerSave.getTime());
 		
 		populateEnemies();
 		
@@ -86,11 +94,24 @@ public class Level1State extends GameState {
 			GamePanel.HEIGHT / 2 - player.gety()
 		);
 		
+		
 		// set background
 		bg.setPosition(tileMap.getx(), tileMap.gety());
 		
 		// attack enemies
 		player.checkAttack(enemies);
+		
+		//When player loses all health or drop below maximum height (e.g. to a hole)
+		if(player.getHealth() == 0 || player.gety() > 228) {
+			eventDead = blockInput = true;
+		}
+		if(eventDead) eventDead();
+		
+		//When player Pass the x coordinate of the level area, the Player will win
+		if(player.getx() > 3100) {
+			eventFinish = blockInput = true;
+		}
+		if(eventFinish) eventFinish();
 		
 		// update all enemies
 		for(int i = 0; i < enemies.size(); i++) {
@@ -164,5 +185,50 @@ public class Level1State extends GameState {
 		if(k == KeyEvent.VK_DOWN) player.setDown(false);
 		if(k == KeyEvent.VK_W) player.setJumping(false);
 		if(k == KeyEvent.VK_E) player.setGliding(false);
+	}
+
+
+
+//EVENT //
+
+
+	private void eventDead() {
+		eventCount++;
+		if(eventCount == 1) {
+			player.setDead();
+			player.stop();
+			gsm.setState(GameStateManager.GAMEOVERSTATE);
+			bgMusic.close();
+		}
+		if(eventCount == 60) {
+			tb.clear();
+			tb.add(new Rectangle(
+				GamePanel.WIDTH / 2, GamePanel.HEIGHT / 2, 0, 0));
+		}
+		else if(eventCount > 60) {
+			tb.get(0).x -= 6;
+			tb.get(0).y -= 4;
+			tb.get(0).width += 12;
+			tb.get(0).height += 8;
+		}
+		if(eventCount >= 120) {
+			if(player.getHealth() == 0) {
+				gsm.setState(GameStateManager.MENUSTATE);
+			}
+			else {
+				eventDead = blockInput = false;
+				eventCount = 0;
+			}
+		}
+	}
+	
+	private void eventFinish() {
+		eventCount++;
+		if(eventCount == 1) {
+			player.setDead();
+			player.stop();
+			gsm.setState(GameStateManager.GAMEFINISHSTATE);
+			bgMusic.close();
+		}
 	}
 }
