@@ -5,6 +5,10 @@ import javax.sound.sampled.*;
 
 public class AudioPlayer {
 	private Clip clip;
+	private float previousVolume = 0;
+	private float currentVolume = 0;
+	private FloatControl fc;
+	private boolean mute = false;
 	
 	public AudioPlayer(String s) 
 	{
@@ -27,6 +31,7 @@ public class AudioPlayer {
 			AudioInputStream dais = AudioSystem.getAudioInputStream(decodeFormat, ais);
 			clip = AudioSystem.getClip();
 			clip.open(dais);
+			fc = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
 		}
 		catch(Exception e) 
 		{
@@ -34,7 +39,7 @@ public class AudioPlayer {
 		}
 		
 	}
-	
+
 	//Audio behavior
 	public void play() 
 	{
@@ -58,5 +63,39 @@ public class AudioPlayer {
 	{
 		stop();
 		clip.close();
+	}
+	
+	public void volumeUp() {
+		if(mute)
+			mute = false;
+		currentVolume += 5.0f;
+		if(currentVolume > 6.0f)
+			currentVolume = 6.0f;
+		fc.setValue(currentVolume);
+	}
+	
+	public void volumeDown() {
+		if(mute)
+			mute = false;
+		currentVolume -= 5.0f;
+		if(currentVolume < -50.0f) {
+			currentVolume = -50.0f;
+			mute = true;
+		}
+		fc.setValue(currentVolume);
+	}
+	
+	public void volumeMute() {
+		if(!mute) {
+			previousVolume = currentVolume;
+			currentVolume = -50.0f;
+			fc.setValue(currentVolume);
+			mute = true;
+		}
+		else if(mute) {
+			currentVolume = previousVolume;
+			fc.setValue(currentVolume);
+			mute = false;
+		}
 	}
 }

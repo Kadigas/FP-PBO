@@ -160,7 +160,6 @@ public class LevelSelectState extends GameState {
 			else
 				currentChoice = 2;
 		}
-		draw(null);
 	}
 	
 	public void keyReleased(int k) {}
