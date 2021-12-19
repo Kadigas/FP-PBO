@@ -8,14 +8,17 @@ import id.ac.its.squealer.audio.AudioPlayer;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 
 public class Level2State extends GameState {
 	
 	private TileMap tileMap;
 	private Background bg;
-	private PauseState pauseState;
+	private BufferedImage pauseScreen;
 	
 	private Player player;
 	
@@ -25,7 +28,7 @@ public class Level2State extends GameState {
 	private HUD hud;
 	private Clock clock;
 	
-	private AudioPlayer bgMusic, sfx;
+	private AudioPlayer bgMusic;
 	
 	private boolean blockInput = false;
 	private int eventCount = 0;
@@ -38,6 +41,13 @@ public class Level2State extends GameState {
 	private boolean eventBossDead; 
 	
 	private static boolean pause = false;
+	
+	private String[] notification = {
+			"Paused",
+			"Press ESC to resume"
+	};
+	
+	private Font font1, font2;
 	
 	public Level2State(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -54,7 +64,15 @@ public class Level2State extends GameState {
 		
 		bg = new Background("/Backgrounds/grassbg1.gif", 0.1);
 		
-		pauseState = new PauseState();
+		try {
+			pauseScreen = ImageIO.read(getClass().getResourceAsStream("/Backgrounds/pause.png"));
+			font1 = new Font("Arial", Font.PLAIN, 36);
+			font2 = new Font("Arial", Font.PLAIN, 12);
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		player = new Player(tileMap);
 		player.setPosition(100, 100);
@@ -69,7 +87,7 @@ public class Level2State extends GameState {
 		
 		bgMusic = new AudioPlayer("/Music/level2.mp3");
 		bgMusic.bgplay();
-		sfx = new AudioPlayer("/SFX/menuPressed.mp3");
+		
 	}
 	
 	private void populateEnemies() {
@@ -108,7 +126,7 @@ public class Level2State extends GameState {
 		player.checkAttack(enemies);
 		
 		//When player loses all health or drop below maximum height (e.g. to a hole)
-		if(player.getHealth() == 0 || player.gety() > 228) {
+		if(player.getHealth() == 0 || player.gety() > 220) {
 			eventDead = blockInput = true;
 		}
 		if(eventDead) eventDead();
@@ -173,8 +191,15 @@ public class Level2State extends GameState {
 		// draw clock
 		clock.draw(g);
 		
-		if(pause)
-			pauseState.drawPause(g);
+		if(pause) {
+			g.drawImage(pauseScreen, 0, 0,
+	                 pauseScreen.getWidth(null), pauseScreen.getHeight(null), null);
+			g.setFont(font1);
+			g.setColor(Color.WHITE);
+			g.drawString(notification[0], 100, 120);
+			g.setFont(font2);
+			g.drawString(notification[1], 100, 150);
+		}
 				
 	}
 	
@@ -188,7 +213,6 @@ public class Level2State extends GameState {
 		if(k == KeyEvent.VK_R) player.setScratching();
 		if(k == KeyEvent.VK_F) player.setFiring();
 		if(k == KeyEvent.VK_ESCAPE) {
-			sfx.play();
 			if(!pause) {
 				pause = true;
 				clock.stop();
@@ -197,12 +221,6 @@ public class Level2State extends GameState {
 				pause = false;
 				clock.start();
 			}
-		}
-		if(k == KeyEvent.VK_ENTER && pause) {
-			pause = false;
-			sfx.play();
-			bgMusic.close();
-			gsm.setState(GameStateManager.LEVELSELECTSTATE);
 		}
 	}
 	
@@ -252,6 +270,7 @@ public class Level2State extends GameState {
 		if(eventCount == 1) {
 			player.setDead();
 			player.stop();
+			clock.stop();
 			gsm.setState(GameStateManager.GAMEFINISH2STATE);
 			bgMusic.close();
 		}

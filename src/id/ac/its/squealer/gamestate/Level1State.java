@@ -108,7 +108,7 @@ public class Level1State extends GameState {
 		player.checkAttack(enemies);
 		
 		//When player loses all health or drop below maximum height (e.g. to a hole)
-		if(player.getHealth() == 0 || player.gety() > 228) {
+		if(player.getHealth() == 0 || player.gety() > 220) {
 			eventDead = blockInput = true;
 		}
 		if(eventDead) eventDead();
@@ -255,6 +255,7 @@ public class Level1State extends GameState {
 		if(eventCount == 1) {
 			player.setDead();
 			player.stop();
+			clock.stop();
 			gsm.setState(GameStateManager.GAMEFINISHSTATE);
 			bgMusic.close();
 		}

@@ -3,6 +3,7 @@ package id.ac.its.squealer.gamestate;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -20,6 +21,7 @@ public class GameFinishState extends GameState{
 		"Level Select",
 		"Quit"
 	};
+	private String time;
 	
 	private Font font;
 	
@@ -73,6 +75,13 @@ public class GameFinishState extends GameState{
 			g.drawString(options[i], 120, 190 + i * 15);
 		}
 		
+		// draw time
+		getTime();
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Arial", Font.BOLD, 14));
+		g.drawString("Your time is:", 120, 120);
+		g.drawString(time, 140, 135);
+		
 	}
 	
 	private void select() {
@@ -105,6 +114,35 @@ public class GameFinishState extends GameState{
 			if(currentChoice == options.length) {
 				currentChoice = 0;
 			}
+		}
+	}
+	
+	public void getTime() {
+		if(!new File("Resource/Highscore/Time.dat").exists())
+			storeFileInit();
+		try {
+			ObjectInputStream infile = new ObjectInputStream(new FileInputStream("Resource/Highscore/Time.dat"));
+			this.time = infile.readObject().toString();
+			infile.close();
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void storeFileInit() {
+		try {
+			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream("Resource/Highscore/Time.dat"));
+			outfile.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -3,6 +3,7 @@ package id.ac.its.squealer.entity;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -105,6 +106,25 @@ public class Clock {
 	}
 	
 	public void stop() {
+		storeTime();
 		clock.stop();
+	}
+	
+	private void storeTime() {
+		try {
+			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream("Resource/Highscore/Time.dat"));
+			outfile.writeObject(string);
+			outfile.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String getTime() {
+		return clock.toString();
 	}
 }
