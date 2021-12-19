@@ -113,6 +113,7 @@ public class Clock {
 	private void storeTime() {
 		try {
 			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream("Resource/Highscore/Time.dat"));
+			outfile.flush();
 			outfile.writeObject(string);
 			outfile.close();
 		}
@@ -122,9 +123,5 @@ public class Clock {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public String getTime() {
-		return clock.toString();
 	}
 }

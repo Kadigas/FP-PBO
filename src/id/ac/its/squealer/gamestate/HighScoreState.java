@@ -5,10 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.nio.*;
-import java.nio.file.Paths;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 import id.ac.its.squealer.audio.AudioPlayer;
 import id.ac.its.squealer.tilemap.Background;
@@ -59,7 +55,10 @@ public class HighScoreState extends GameState {
 		bg.draw(g);
 		
 		// read stored high score
-		//getHighScore();  there is a bug here
+		scores = new String[3];
+		scores[0] = getHighScore("Resource/Highscore/Level1.dat");
+		scores[1] = getHighScore("Resource/Highscore/Level2.dat");
+		scores[2] = getHighScore("Resource/Highscore/Level3.dat");
 		
 		// draw title
 		g.setFont(font1);
@@ -76,6 +75,13 @@ public class HighScoreState extends GameState {
 				g.drawString(about[i], 145, 220);
 			}
 		}
+		g.setColor(Color.WHITE);
+		for(int i = 0; i < scores.length; i++) {
+			if(scores[i] != null)
+				g.drawString(scores[i], 15, 50 + i * 60);
+			else 
+				g.drawString("-", 15, 80 + i * 60);
+		}
 	}
 	
 	public void keyPressed(int k) {
@@ -88,26 +94,40 @@ public class HighScoreState extends GameState {
 	
 	public void keyReleased(int k) {}
 	
-	private void getHighScore() {
-		scores = new String[3];
-		try 
-		{
-			ObjectInputStream level1File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level1.txt"));
-			ObjectInputStream level2File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level2.txt"));
-			ObjectInputStream level3File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level3.txt"));
-			
-			scores[0] = level1File.readObject().toString();
-			scores[1] = level2File.readObject().toString();
-			scores[2] = level3File.readObject().toString();
-			
+	private String getHighScore(String filename) {
+		String temp;
+		if(!new File(filename).exists())
+			storeFileInit(filename);
+		try {
+			System.out.println("test");
+			ObjectInputStream infile = new ObjectInputStream(new FileInputStream(filename));
+			temp = infile.readObject().toString();
+			System.out.println(temp);
+			infile.close();
+			return temp;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private void storeFileInit(String filename) {
+		try {
+			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream(filename));
+			outfile.flush();
+			outfile.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		System.out.println(scores);
 	}
 	
 }

@@ -18,8 +18,9 @@ import id.ac.its.squealer.tilemap.Background;
 
 public class GameFinish2State extends GameState{
 	private Background bg;
-	private BufferedImage gameTitle;
+	private BufferedImage gameTitle, newHighScoreBadge;
 	private HashMap<String, AudioPlayer> sfx;
+	private boolean highScoreFilePresent = true;
 	
 	private int currentChoice = 0;
 	private String[] options = {
@@ -27,7 +28,7 @@ public class GameFinish2State extends GameState{
 		"Level Select",
 		"Quit"
 	};
-	private String time;
+	private String time, highScore;
 	
 	private Font font;
 	
@@ -83,10 +84,22 @@ public class GameFinish2State extends GameState{
 		
 		// draw time
 		getTime();
+		getHighScore();
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 14));
 		g.drawString("Your time is:", 120, 120);
 		g.drawString(time, 140, 135);
+		if(scoreComp() || !highScoreFilePresent) {
+			highScoreFilePresent = true;
+			highScoreSet();
+			try {
+				newHighScoreBadge = ImageIO.read(getClass().getResourceAsStream("/Highscore/NewHighScore.png"));
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			g.drawImage(newHighScoreBadge, 100, 150, newHighScoreBadge.getWidth(null) / 4, newHighScoreBadge.getHeight(null) / 4, null);
+		}
 		
 	}
 	
@@ -123,9 +136,9 @@ public class GameFinish2State extends GameState{
 		}
 	}
 	
-	public void getTime() {
+	private void getTime() {
 		if(!new File("Resource/Highscore/Time.dat").exists())
-			storeFileInit();
+			storeFileInit("Resource/Highscore/Time.dat");
 		try {
 			ObjectInputStream infile = new ObjectInputStream(new FileInputStream("Resource/Highscore/Time.dat"));
 			this.time = infile.readObject().toString();
@@ -139,9 +152,52 @@ public class GameFinish2State extends GameState{
 		}
 	}
 	
-	private void storeFileInit() {
+	private void getHighScore() {
+		if(!new File("Resource/Highscore/Level2.dat").exists()) {
+			storeFileInit("Resource/Highscore/Level2.dat");
+			highScoreFilePresent = false;
+		}
 		try {
-			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream("Resource/Highscore/Time.dat"));
+			ObjectInputStream infile = new ObjectInputStream(new FileInputStream("Resource/Highscore/Level2.dat"));
+			this.highScore = infile.readObject().toString();
+			infile.close();
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	boolean scoreComp() {
+		for(int i = 0; i < time.length(); i++) {
+			if(time.charAt(i) == highScore.charAt(i)) continue;
+			if(time.charAt(i) < highScore.charAt(i)) return true;
+			else return false;
+		}
+		return false;
+	}
+	
+	private void highScoreSet() {
+		try {
+			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream("Resource/Highscore/Level2.dat"));
+			outfile.flush();
+			outfile.writeChars(time);
+			outfile.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void storeFileInit(String filename) {
+		try {
+			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream(filename));
+			outfile.flush();
 			outfile.close();
 		}
 		catch (FileNotFoundException e) {
