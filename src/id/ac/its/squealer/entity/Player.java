@@ -19,6 +19,7 @@ public class Player extends MapObject {
 		private boolean dead;
 		private boolean flinching;
 		private long flinchTimer;
+		private long time;
 		
 		// fireball
 		private boolean firing;
@@ -267,6 +268,28 @@ public class Player extends MapObject {
 			}
 			
 		}
+		
+		public void reset() {
+			health = maxHealth;
+			facingRight = true;
+			currentAction = -1;
+			stop();
+		}
+		
+		public void setDead() {
+			health = 0;
+			stop();
+		}
+		
+		public void stop() {
+			left = right = up = down = flinching = 
+				jumping = scratching = false;
+		}
+		
+		public long getTime() { return time; }
+		public void setTime(long t) { time = t; }
+		public void setHealth(int i) { health = i; }
+		
 		
 		public void update() {
 			
