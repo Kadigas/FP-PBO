@@ -272,6 +272,7 @@ public class Level1State extends GameState {
 		if(eventCount == 1) {
 			player.setDead();
 			player.stop();
+			clock.stop();
 			gsm.setState(GameStateManager.GAMEFINISHSTATE);
 			bgMusic.close();
 		}
