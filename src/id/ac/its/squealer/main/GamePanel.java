@@ -129,6 +129,8 @@ public class GamePanel extends JPanel
 			else
 				pause = false;
 		}
+		if(keyCode == KeyEvent.VK_ENTER && pause)
+			pause = false;
 	}
 	public void keyReleased(KeyEvent key) {
 		gsm.keyReleased(key.getKeyCode());
