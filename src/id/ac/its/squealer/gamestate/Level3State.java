@@ -126,7 +126,7 @@ public class Level3State extends GameState {
 		player.checkAttack(enemies);
 		
 		//When player loses all health or drop below maximum height (e.g. to a hole)
-		if(player.getHealth() == 0 || player.gety() > 225) {
+		if(player.getHealth() == 0 || player.gety() > 220) {
 			eventDead = blockInput = true;
 		}
 		if(eventDead) eventDead();
