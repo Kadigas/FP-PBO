@@ -8,7 +8,10 @@ import id.ac.its.squealer.audio.AudioPlayer;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 
 public class Level1State extends GameState {
@@ -25,7 +28,6 @@ public class Level1State extends GameState {
 	private HUD hud;
 	private Clock clock;
 	
-
 	private boolean blockInput = false;
 	private int eventCount = 0;
 	private ArrayList<Rectangle> tb;
@@ -35,6 +37,8 @@ public class Level1State extends GameState {
 	private AudioPlayer bgMusic, sfx;
 	
 	private static boolean pause = false;
+	
+	private Font font1, font2;
 	
 	public Level1State(GameStateManager gsm) {
 		this.gsm = gsm;

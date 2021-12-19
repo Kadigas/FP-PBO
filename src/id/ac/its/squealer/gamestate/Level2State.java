@@ -18,7 +18,7 @@ public class Level2State extends GameState {
 	
 	private TileMap tileMap;
 	private Background bg;
-	private BufferedImage pauseScreen;
+	private PauseState pauseState;
 	
 	private Player player;
 	
@@ -28,7 +28,7 @@ public class Level2State extends GameState {
 	private HUD hud;
 	private Clock clock;
 	
-	private AudioPlayer bgMusic;
+	private AudioPlayer bgMusic, sfx;
 	
 	private boolean blockInput = false;
 	private int eventCount = 0;
@@ -64,15 +64,7 @@ public class Level2State extends GameState {
 		
 		bg = new Background("/Backgrounds/grassbg1.gif", 0.1);
 		
-		try {
-			pauseScreen = ImageIO.read(getClass().getResourceAsStream("/Backgrounds/pause.png"));
-			font1 = new Font("Arial", Font.PLAIN, 36);
-			font2 = new Font("Arial", Font.PLAIN, 12);
-		}
-		
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		pauseState = new PauseState();
 		
 		player = new Player(tileMap);
 		player.setPosition(100, 100);
@@ -87,7 +79,7 @@ public class Level2State extends GameState {
 		
 		bgMusic = new AudioPlayer("/Music/level2.mp3");
 		bgMusic.bgplay();
-		
+		sfx = new AudioPlayer("/SFX/menuPressed.mp3");
 	}
 	
 	private void populateEnemies() {
@@ -191,15 +183,8 @@ public class Level2State extends GameState {
 		// draw clock
 		clock.draw(g);
 		
-		if(pause) {
-			g.drawImage(pauseScreen, 0, 0,
-	                 pauseScreen.getWidth(null), pauseScreen.getHeight(null), null);
-			g.setFont(font1);
-			g.setColor(Color.WHITE);
-			g.drawString(notification[0], 100, 120);
-			g.setFont(font2);
-			g.drawString(notification[1], 100, 150);
-		}
+		if(pause)
+			pauseState.drawPause(g);
 				
 	}
 	
@@ -213,6 +198,7 @@ public class Level2State extends GameState {
 		if(k == KeyEvent.VK_R) player.setScratching();
 		if(k == KeyEvent.VK_F) player.setFiring();
 		if(k == KeyEvent.VK_ESCAPE) {
+			sfx.play();
 			if(!pause) {
 				pause = true;
 				clock.stop();
@@ -221,6 +207,12 @@ public class Level2State extends GameState {
 				pause = false;
 				clock.start();
 			}
+		}
+		if(k == KeyEvent.VK_ENTER && pause) {
+			pause = false;
+			sfx.play();
+			bgMusic.close();
+			gsm.setState(GameStateManager.LEVELSELECTSTATE);
 		}
 	}
 	
