@@ -30,6 +30,20 @@ public class Level3State extends GameState {
 	
 	private AudioPlayer bgMusic;
 	
+//<<<<<<< Updated upstream
+//=======
+//<<<<<<< HEAD
+	private boolean blockInput = false;
+	private int eventCount = 0;
+	private boolean eventStart;
+	private ArrayList<Rectangle> tb;
+	private boolean eventFinish;
+	private boolean eventDead;
+	private boolean eventPortal;
+	private boolean flash;
+	private boolean eventBossDead; 
+//=======
+//>>>>>>> Stashed changes
 	private static boolean pause = false;
 	
 	private String[] notification = {
@@ -38,6 +52,10 @@ public class Level3State extends GameState {
 	};
 	
 	private Font font1, font2;
+//<<<<<<< Updated upstream
+//=======
+//>>>>>>> Naufal
+//>>>>>>> Stashed changes
 	
 	public Level3State(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -120,6 +138,7 @@ public class Level3State extends GameState {
 			Enemy e = enemies.get(i);
 			e.update();
 			if(e.isDead()) {
+				clock.reduceTime(2);
 				enemies.remove(i);
 				i--;
 				explosions.add(
