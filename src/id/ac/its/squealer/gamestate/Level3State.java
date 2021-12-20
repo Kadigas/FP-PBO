@@ -222,7 +222,7 @@ public class Level3State extends GameState {
 		if(eventCount == 1) {
 			player.setDead();
 			player.stop();
-			gsm.setState(GameStateManager.GAMEOVER3STATE);
+			gsm.setState(GameStateManager.GAMEOVERSTATE);
 			bgMusic.close();
 		}
 		if(eventCount == 60) {

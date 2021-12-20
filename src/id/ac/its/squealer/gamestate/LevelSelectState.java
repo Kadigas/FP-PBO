@@ -53,7 +53,7 @@ public class LevelSelectState extends GameState {
 		
 		sfx = new HashMap<String, AudioPlayer>();
 		sfx.put("press", new AudioPlayer("/SFX/menuPressed.mp3"));
-		sfx.put("updown", new AudioPlayer("/SFX/jump.mp3"));
+		sfx.put("updown", new AudioPlayer("/SFX/upDown.mp3"));
 		init();
 	}
 	

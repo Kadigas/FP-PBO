@@ -13,6 +13,7 @@ import id.ac.its.squealer.tilemap.Background;
 public class GameOverState extends GameState{
 	private Background bg;
 	private BufferedImage gameTitle;
+	private AudioPlayer bgMusic;
 	private HashMap<String, AudioPlayer> sfx;
 	
 	private int currentChoice = 0;
@@ -39,12 +40,17 @@ public class GameOverState extends GameState{
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		
 		sfx = new HashMap<String, AudioPlayer>();
 		sfx.put("press", new AudioPlayer("/SFX/menuPressed.mp3"));
-		sfx.put("updown", new AudioPlayer("/SFX/jump.mp3"));
+		sfx.put("updown", new AudioPlayer("/SFX/upDown.mp3"));
 		init();
 	}
 	
+	public void init() {
+		bgMusic = new AudioPlayer("/SFX/gameOver.mp3");
+		bgMusic.bgplay();
+	}
 	
 	public void update() {
 		bg.update();
@@ -78,7 +84,12 @@ public class GameOverState extends GameState{
 	
 	private void select() {
 		if(currentChoice == 0) {
-			gsm.setState(GameStateManager.LEVEL1STATE);
+			if(gsm.currentLevel == 1)
+				gsm.setState(GameStateManager.LEVEL1STATE);
+			else if(gsm.currentLevel == 2)
+				gsm.setState(GameStateManager.LEVEL2STATE);
+			else if(gsm.currentLevel == 3)
+				gsm.setState(GameStateManager.LEVEL3STATE);
 		}
 		if(currentChoice == 1) {
 			gsm.setState(GameStateManager.MENUSTATE);
@@ -87,6 +98,7 @@ public class GameOverState extends GameState{
 	
 	public void keyPressed(int k) {
 		if(k == KeyEvent.VK_ENTER){
+			bgMusic.close();
 			sfx.get("press").play();
 			select();
 		}
@@ -107,11 +119,4 @@ public class GameOverState extends GameState{
 	}
 	
 	public void keyReleased(int k) {}
-
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
 }

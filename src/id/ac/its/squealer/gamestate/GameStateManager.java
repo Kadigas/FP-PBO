@@ -6,6 +6,7 @@ public class GameStateManager {
 
 	private GameState[] gameStates;
 	private int currentState;
+	public int currentLevel = 0;
 	
 	public static final int MENUSTATE = 0;
 	public static final int LEVELSELECTSTATE = 1;
@@ -16,12 +17,10 @@ public class GameStateManager {
 	public static final int LEVEL3STATE = 6;
 	public static final int HIGHSCORESTATE = 7;
 	public static final int GAMEOVERSTATE = 8;
-	public static final int GAMEOVER2STATE = 9;
-	public static final int GAMEOVER3STATE = 10;
-	public static final int GAMEFINISHSTATE = 11;
-	public static final int GAMEFINISH2STATE = 12;
-	public static final int GAMEFINISH3STATE = 13;
-	public static final int NUMGAMESTATES = 14;
+	public static final int GAMEFINISHSTATE = 9;
+	public static final int GAMEFINISH2STATE = 10;
+	public static final int GAMEFINISH3STATE = 11;
+	public static final int NUMGAMESTATES = 12;
 	
 	public GameStateManager() {
 		
@@ -42,20 +41,22 @@ public class GameStateManager {
 			gameStates[state] = new LevelSelectState(this);
 		if(state == ABOUTSTATE)
 			gameStates[state] = new AboutState(this);
-		if(state == LEVEL1STATE)
+		if(state == LEVEL1STATE) {
+			currentLevel = 1;
 			gameStates[state] = new Level1State(this);
-		if(state == LEVEL2STATE)
+		}
+		if(state == LEVEL2STATE) {
+			currentLevel = 2;
 			gameStates[state] = new Level2State(this);
-		if(state == LEVEL3STATE)
+		}
+		if(state == LEVEL3STATE) {
+			currentLevel = 3;
 			gameStates[state] = new Level3State(this);
+		}
 		if(state == HIGHSCORESTATE)
 			gameStates[state] = new HighScoreState(this);
 		if(state == GAMEOVERSTATE)
 			gameStates[state] = new GameOverState(this);
-		if(state == GAMEOVER2STATE)
-			gameStates[state] = new GameOver2State(this);
-		if(state == GAMEOVER3STATE)
-			gameStates[state] = new GameOver3State(this);
 		if(state == GAMEFINISHSTATE)
 			gameStates[state] = new GameFinishState(this);
 		if(state == GAMEFINISH2STATE)

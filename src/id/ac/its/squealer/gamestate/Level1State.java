@@ -28,17 +28,15 @@ public class Level1State extends GameState {
 	private HUD hud;
 	private Clock clock;
 	
+	private AudioPlayer bgMusic, sfx;
+	
 	private boolean blockInput = false;
 	private int eventCount = 0;
 	private ArrayList<Rectangle> tb;
 	private boolean eventFinish;
 	private boolean eventDead;
 	
-	private AudioPlayer bgMusic, sfx;
-	
 	private static boolean pause = false;
-	
-	private Font font1, font2;
 	
 	public Level1State(GameStateManager gsm) {
 		this.gsm = gsm;
