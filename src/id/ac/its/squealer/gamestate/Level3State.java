@@ -50,17 +50,17 @@ public class Level3State extends GameState {
 	public void init() {
 		
 		tileMap = new TileMap(30);
-		tileMap.loadTiles("/Tilesets/grasstileset.gif");
-		tileMap.loadMap("/Maps/level1-1.map");
+		tileMap.loadTiles("/Tilesets/level3tileset.gif");
+		tileMap.loadMap("/Maps/level3.map");
 		tileMap.setPosition(0, 0);
 		tileMap.setTween(1);
 		
-		bg = new Background("/Backgrounds/grassbg1.gif", 0.1);
+		bg = new Background("/Backgrounds/bgLevel3.png", 0.1);
 		
 		pauseState = new PauseState();
 		
 		player = new Player(tileMap);
-		player.setPosition(100, 100);
+		player.setPosition(100, 50);
 		
 		populateEnemies();
 		
@@ -82,10 +82,16 @@ public class Level3State extends GameState {
 		FarmerMelee s;
 		Point[] points = new Point[] {
 			new Point(200, 100),
-			new Point(860, 200),
-			new Point(1525, 200),
-			new Point(1680, 200),
-			new Point(1800, 200)
+			new Point(300, 100),
+			new Point(1600, 200),
+			new Point(1650, 200),
+			new Point(1700, 200),
+			new Point(1750, 200),
+			new Point(1800, 200),
+			new Point(1850, 200),
+			new Point(2800, 200),
+			new Point(2850, 200),
+			new Point(2900, 200)
 		};
 		for(int i = 0; i < points.length; i++) {
 			s = new FarmerMelee(tileMap);
@@ -117,7 +123,7 @@ public class Level3State extends GameState {
 		if(eventDead) eventDead();
 		
 		//When player Pass the x coordinate of the level area, the Player will win
-		if(player.getx() > 3100) {
+		if(player.getx() > 3250) {
 			eventFinish = blockInput = true;
 		}
 		if(eventFinish) eventFinish();

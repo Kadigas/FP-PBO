@@ -82,7 +82,8 @@ public class Level2State extends GameState {
 		FarmerMelee s;
 		Point[] points = new Point[] {
 			new Point(700, 100),
-			new Point(2800, 300)
+			new Point(2900, 200),
+			new Point(2950, 200)
 		};
 		for(int i = 0; i < points.length; i++) {
 			s = new FarmerMelee(tileMap);
@@ -114,7 +115,7 @@ public class Level2State extends GameState {
 		if(eventDead) eventDead();
 		
 		//When player Pass the x coordinate of the level area, the Player will win
-		if(player.getx() > 3100) {
+		if(player.getx() > 3250) {
 			eventFinish = blockInput = true;
 		}
 		if(eventFinish) eventFinish();
