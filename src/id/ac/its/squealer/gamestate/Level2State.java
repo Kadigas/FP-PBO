@@ -50,12 +50,12 @@ public class Level2State extends GameState {
 	public void init() {
 		
 		tileMap = new TileMap(30);
-		tileMap.loadTiles("/Tilesets/grasstileset.gif");
-		tileMap.loadMap("/Maps/level1-1.map");
+		tileMap.loadTiles("/Tilesets/level2tileset.gif");
+		tileMap.loadMap("/Maps/level2.map");
 		tileMap.setPosition(0, 0);
 		tileMap.setTween(1);
 		
-		bg = new Background("/Backgrounds/grassbg1.gif", 0.1);
+		bg = new Background("/Backgrounds/bgLevel2.png", 0.1);
 		
 		pauseState = new PauseState();
 		
@@ -81,11 +81,8 @@ public class Level2State extends GameState {
 		
 		FarmerMelee s;
 		Point[] points = new Point[] {
-			new Point(200, 100),
-			new Point(860, 200),
-			new Point(1525, 200),
-			new Point(1680, 200),
-			new Point(1800, 200)
+			new Point(700, 100),
+			new Point(2800, 300)
 		};
 		for(int i = 0; i < points.length; i++) {
 			s = new FarmerMelee(tileMap);
