@@ -1,4 +1,4 @@
-# SQUEALER
+# INTERDIMENSIONAL SQUEALER
 > Final Project mata kuliah PBO (Pemograman Berbasis Objek) kelas F
 
 ## Dibuat Oleh :
@@ -8,7 +8,7 @@
 4. Made Rianja Richo Dainino - 5025201236
 
 ## Deskripsi Game
-Game platformer yang terinspirasi dari Mario Bros di mana tujuan dari game ini adalah menyelesaikan level dengan melewati rintangan. Ada pula cerita yang kami angkat adalah seekor babi bernama Squealer yang pergi meninggalkan peternakan dan menjadi babi penjelajah dimensi pertama. Demi mencapai cita-cita masa kecilnya, Squealer harus dapat menghindari atau bahkan melawan peternak-peternak yang berusaha memakannya. Untuk menemani perjalanannya, ia diberi anugerah super punch yang dapat melancarkan serangan membabi butanya terhadap segala rintangan dan gliding yang akan membantu perjalanan lintas dimensinya.
+Game platformer yang terinspirasi dari Mario Bros di mana tujuan dari game ini adalah menyelesaikan level dengan melewati rintangan. Ada pula cerita yang kami angkat adalah seekor babi bernama Squealer yang pergi meninggalkan peternakan dan menjadi babi penjelajah dimensi pertama. Demi mencapai cita-cita masa kecilnya, Squealer harus dapat menghindari atau bahkan melawan peternak-peternak yang berusaha memakannya. Untuk menemani perjalanannya, ia diberi anugerah _super punch_ dan _mud shot_ yang dapat melancarkan serangan membabi butanya terhadap segala rintangan serta _gliding_ yang dapat memperlancar perjalanan lintas dimensinya.
 
 ## Referensi
 - [Tutorial Pembuatan Game Platformer](https://www.youtube.com/playlist?list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv)
