@@ -14,18 +14,18 @@ public class Player extends MapObject {
 	// player stuff
 		private int health;
 		private int maxHealth;
-		private int fire;
-		private int maxFire;
+		private int mud;
+		private int maxMud;
 		private boolean dead;
 		private boolean flinching;
 		private long flinchTimer;
 		private long time;
 		
-		// fireball
+		// mudball
 		private boolean firing;
-		private int fireCost;
-		private int fireBallDamage;
-		private ArrayList<FireBall> fireBalls;
+		private int mudCost;
+		private int mudBallDamage;
+		private ArrayList<MudBall> mudBalls;
 		
 		// scratch
 		private boolean scratching;
@@ -38,7 +38,7 @@ public class Player extends MapObject {
 		// animations
 		private ArrayList<BufferedImage[]> sprites;
 		private final int[] numFrames = {
-			5, 8, 1, 2, 5, 2, 5
+			5, 8, 1, 2, 5, 4, 5
 		};
 		
 		// animation actions
@@ -47,7 +47,7 @@ public class Player extends MapObject {
 		private static final int JUMPING = 2;
 		private static final int FALLING = 3;
 		private static final int GLIDING = 4;
-		private static final int FIREBALL = 5;
+		private static final int MUDBALL = 5;
 		private static final int SCRATCHING = 6;
 		
 		private HashMap<String, AudioPlayer> sfx;
@@ -72,11 +72,11 @@ public class Player extends MapObject {
 			facingRight = true;
 			
 			health = maxHealth = 5;
-			fire = maxFire = 2500;
+			mud = maxMud = 2500;
 			
-			fireCost = 200;
-			fireBallDamage = 5;
-			fireBalls = new ArrayList<FireBall>();
+			mudCost = 400;
+			mudBallDamage = 5;
+			mudBalls = new ArrayList<MudBall>();
 			
 			scratchDamage = 8;
 			scratchRange = 40;
@@ -134,13 +134,15 @@ public class Player extends MapObject {
 			sfx = new HashMap<String, AudioPlayer>();
 			sfx.put("jump", new AudioPlayer("/SFX/jump.mp3"));
 			sfx.put("scratch", new AudioPlayer("/SFX/scratch.mp3"));
+			sfx.put("mudball", new AudioPlayer("/SFX/mudball.wav"));
 			
 		}
 		
 		public int getHealth() { return health; }
 		public int getMaxHealth() { return maxHealth; }
-		public int getFire() { return fire; }
-		public int getMaxFire() { return maxFire; }
+		public int getMud() { return mud; }
+		public int getMaxMud() { return maxMud; }
+		public boolean isDead() { return dead; }
 		
 		public void setFiring() { 
 			firing = true;
@@ -183,11 +185,11 @@ public class Player extends MapObject {
 					}
 				}
 				
-				// fireballs
-				for(int j = 0; j < fireBalls.size(); j++) {
-					if(fireBalls.get(j).intersects(e)) {
-						e.hit(fireBallDamage);
-						fireBalls.get(j).setHit();
+				// mudballs
+				for(int j = 0; j < mudBalls.size(); j++) {
+					if(mudBalls.get(j).intersects(e)) {
+						e.hit(mudBallDamage);
+						mudBalls.get(j).setHit();
 						break;
 					}
 				}
@@ -242,7 +244,7 @@ public class Player extends MapObject {
 			
 			// cannot move while attacking, except in air
 			if(
-			(currentAction == SCRATCHING || currentAction == FIREBALL) &&
+			(currentAction == SCRATCHING || currentAction == MUDBALL) &&
 			!(jumping || falling)) {
 				dx = 0;
 			}
@@ -278,6 +280,7 @@ public class Player extends MapObject {
 		
 		public void setDead() {
 			health = 0;
+			dead = true;
 			stop();
 		}
 		
@@ -290,7 +293,6 @@ public class Player extends MapObject {
 		public void setTime(long t) { time = t; }
 		public void setHealth(int i) { health = i; }
 		
-		
 		public void update() {
 			
 			// update position
@@ -302,27 +304,27 @@ public class Player extends MapObject {
 			if(currentAction == SCRATCHING) {
 				if(animation.hasPlayedOnce()) scratching = false;
 			}
-			if(currentAction == FIREBALL) {
+			if(currentAction == MUDBALL) {
 				if(animation.hasPlayedOnce()) firing = false;
 			}
 			
-			// fireball attack
-			fire += 1;
-			if(fire > maxFire) fire = maxFire;
-			if(firing && currentAction != FIREBALL) {
-				if(fire > fireCost) {
-					fire -= fireCost;
-					FireBall fb = new FireBall(tileMap, facingRight);
+			// mudball attack
+			mud += 1;
+			if(mud > maxMud) mud = maxMud;
+			if(firing && currentAction != MUDBALL) {
+				if(mud > mudCost) {
+					mud -= mudCost;
+					MudBall fb = new MudBall(tileMap, facingRight);
 					fb.setPosition(x, y);
-					fireBalls.add(fb);
+					mudBalls.add(fb);
 				}
 			}
 			
-			// update fireballs
-			for(int i = 0; i < fireBalls.size(); i++) {
-				fireBalls.get(i).update();
-				if(fireBalls.get(i).shouldRemove()) {
-					fireBalls.remove(i);
+			// update mudballs
+			for(int i = 0; i < mudBalls.size(); i++) {
+				mudBalls.get(i).update();
+				if(mudBalls.get(i).shouldRemove()) {
+					mudBalls.remove(i);
 					i--;
 				}
 			}
@@ -347,9 +349,10 @@ public class Player extends MapObject {
 				}
 			}
 			else if(firing) {
-				if(currentAction != FIREBALL) {
-					currentAction = FIREBALL;
-					animation.setFrames(sprites.get(FIREBALL));
+				if(currentAction != MUDBALL) {
+					sfx.get("mudball").play();
+					currentAction = MUDBALL;
+					animation.setFrames(sprites.get(MUDBALL));
 					animation.setDelay(100);
 					width = 30;
 				}
@@ -398,7 +401,7 @@ public class Player extends MapObject {
 			animation.update();
 			
 			// set direction
-			if(currentAction != SCRATCHING && currentAction != FIREBALL) {
+			if(currentAction != SCRATCHING && currentAction != MUDBALL) {
 				if(right) facingRight = true;
 				if(left) facingRight = false;
 			}
@@ -409,9 +412,9 @@ public class Player extends MapObject {
 			
 			setMapPosition();
 			
-			// draw fireballs
-			for(int i = 0; i < fireBalls.size(); i++) {
-				fireBalls.get(i).draw(g);
+			// draw mudballs
+			for(int i = 0; i < mudBalls.size(); i++) {
+				mudBalls.get(i).draw(g);
 			}
 			
 			// draw player
