@@ -60,7 +60,7 @@ public class OptionState extends GameState {
 		
 		// draw title
 		g.setFont(font1);
-		g.setColor(Color.LIGHT_GRAY);
+		g.setColor(Color.WHITE);
 		g.drawString(about[0], 100, 30);
 		
 		g.setFont(font);
@@ -70,7 +70,7 @@ public class OptionState extends GameState {
 				g.setColor(Color.RED);
 			}
 			else {
-				g.setColor(Color.LIGHT_GRAY);
+				g.setColor(Color.WHITE);
 			}
 			g.drawString(about[i], 100, 40 + i * 40);
 		}

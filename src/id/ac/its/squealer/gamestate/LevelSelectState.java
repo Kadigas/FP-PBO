@@ -154,9 +154,12 @@ public class LevelSelectState extends GameState {
 		}
 		if(k == KeyEvent.VK_UP) {
 			sfx.get("updown").play();
-			if(currentChoice == 3) {
+			if(currentChoice == 0) 
+				currentChoice = 3;
+			else if(currentChoice == 3) 
 				currentChoice = 0;
-			}
+			else if(currentChoice == 2)
+				currentChoice = 4;
 			else
 				currentChoice = 2;
 		}

@@ -49,7 +49,7 @@ public class GameOverState extends GameState{
 	
 	public void init() {
 		bgMusic = new AudioPlayer("/SFX/gameOver.mp3");
-		bgMusic.bgplay();
+		bgMusic.play();
 	}
 	
 	public void update() {
