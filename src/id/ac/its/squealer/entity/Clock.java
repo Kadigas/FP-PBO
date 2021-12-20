@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 public class Clock {
-	Timer clock;
+	private Timer clock;
 	private BufferedImage image;
 	private int second, minute;
 	private Font font;
