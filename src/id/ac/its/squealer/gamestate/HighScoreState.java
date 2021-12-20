@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.io.*;
+
 
 import id.ac.its.squealer.audio.AudioPlayer;
 import id.ac.its.squealer.entity.HighScore;

@@ -8,10 +8,8 @@ import id.ac.its.squealer.audio.AudioPlayer;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 
 
 public class Level3State extends GameState {
@@ -30,15 +28,10 @@ public class Level3State extends GameState {
 	
 	private AudioPlayer bgMusic, sfx;
 	
-	private boolean blockInput = false;
 	private int eventCount = 0;
-	private boolean eventStart;
 	private ArrayList<Rectangle> tb;
 	private boolean eventFinish;
 	private boolean eventDead;
-	private boolean eventPortal;
-	private boolean flash;
-	private boolean eventBossDead; 
 
 	private static boolean pause = false;
 	
@@ -118,13 +111,13 @@ public class Level3State extends GameState {
 		
 		//When player loses all health or drop below maximum height (e.g. to a hole)
 		if(player.getHealth() == 0 || player.gety() > 220) {
-			eventDead = blockInput = true;
+			eventDead = true;
 		}
 		if(eventDead) eventDead();
 		
 		//When player Pass the x coordinate of the level area, the Player will win
 		if(player.getx() > 3250) {
-			eventFinish = blockInput = true;
+			eventFinish = true;
 		}
 		if(eventFinish) eventFinish();
 		
@@ -247,7 +240,7 @@ public class Level3State extends GameState {
 				gsm.setState(GameStateManager.MENUSTATE);
 			}
 			else {
-				eventDead = blockInput = false;
+				eventDead =  false;
 				eventCount = 0;
 			}
 		}
