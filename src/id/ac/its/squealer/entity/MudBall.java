@@ -5,14 +5,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class FireBall extends MapObject {
+public class MudBall extends MapObject {
 
 	private boolean hit;
 	private boolean remove;
 	private BufferedImage[] sprites;
 	private BufferedImage[] hitSprites;
 	
-	public FireBall(TileMap tm, boolean right) {
+	public MudBall(TileMap tm, boolean right) {
 		
 		super(tm);
 		
@@ -32,7 +32,7 @@ public class FireBall extends MapObject {
 			
 			BufferedImage spritesheet = ImageIO.read(
 				getClass().getResourceAsStream(
-					"/Sprites/Player/fireball.gif"
+					"/Sprites/Player/mudball.gif"
 				)
 			);
 			
