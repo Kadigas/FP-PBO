@@ -14,15 +14,16 @@ import id.ac.its.squealer.tilemap.Background;
 public class GameFinishState extends GameState{
 	private Background bg;
 	private BufferedImage gameTitle, newHighScoreBadge;
+	private AudioPlayer bgMusic;
 	private HashMap<String, AudioPlayer> sfx;
-	private boolean highScoreFilePresent = true;
 	
 	private int currentChoice = 0;
-	private String[] options = {
+	private String[] options1 = {
 		"Advance To Level 2",
 		"Level Select",
 		"Quit"
 	};
+
 	private StringBuilder clock;
 	private int time;
 	private HighScore highScore = new HighScore(1);
@@ -48,10 +49,14 @@ public class GameFinishState extends GameState{
 		}
 		sfx = new HashMap<String, AudioPlayer>();
 		sfx.put("press", new AudioPlayer("/SFX/menuPressed.mp3"));
-		sfx.put("updown", new AudioPlayer("/SFX/jump.mp3"));
+		sfx.put("updown", new AudioPlayer("/SFX/upDown.mp3"));
 		init();
 	}
 	
+	public void init() {
+		bgMusic = new AudioPlayer("/SFX/gameClear.mp3");
+		bgMusic.play();
+	}
 	
 	public void update() {
 		bg.update();
@@ -69,7 +74,7 @@ public class GameFinishState extends GameState{
         
   
 		g.setFont(font);
-		for(int i = 0; i < options.length; i++) {
+		for(int i = 0; i < options1.length; i++) {
 			if(i == currentChoice) 
 			{
 				g.setColor(Color.RED);
@@ -77,13 +82,13 @@ public class GameFinishState extends GameState{
 			else {
 				g.setColor(Color.LIGHT_GRAY);
 			}
-			g.drawString(options[i], 120, 190 + i * 15);
+			g.drawString(options1[i], 120, 190 + i * 15);
 		}
+		
 		
 		// draw time
 		getTime();
 		score = highScore.getHighScore();
-		System.out.println(score);
 		highScore.highScoreSet(score);
 		
 		clock = new StringBuilder();
@@ -113,15 +118,15 @@ public class GameFinishState extends GameState{
 	}
 	
 	private void select() {
-		if(currentChoice == 0) {
+		if(currentChoice == 0)
 			gsm.setState(GameStateManager.LEVEL2STATE);
-		}
-		if(currentChoice == 1) {
+			
+		if(currentChoice == 1)
 			gsm.setState(GameStateManager.LEVELSELECTSTATE);
-		}
-		if(currentChoice == 2) {
+		
+		if(currentChoice == 2)
 			gsm.setState(GameStateManager.MENUSTATE);
-		}
+		
 	}
 	
 	public void keyPressed(int k) {
@@ -132,16 +137,14 @@ public class GameFinishState extends GameState{
 		if(k == KeyEvent.VK_UP) {
 			sfx.get("updown").play();
 			currentChoice--;
-			if(currentChoice == -1) {
-				currentChoice = options.length - 1;
-			}
+			if(currentChoice == -1) 
+				currentChoice = options1.length - 1;
 		}
 		if(k == KeyEvent.VK_DOWN) {
 			sfx.get("updown").play();
 			currentChoice++;
-			if(currentChoice == options.length) {
+			if(currentChoice == options1.length) 
 				currentChoice = 0;
-			}
 		}
 	}
 	
@@ -174,10 +177,4 @@ public class GameFinishState extends GameState{
 	
 	public void keyReleased(int k) {}
 
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -22,6 +22,7 @@ import id.ac.its.squealer.tilemap.Background;
 public class GameFinish3State extends GameState {
 	private Background bg;
 	private BufferedImage gameTitle, newHighScoreBadge;
+	private AudioPlayer bgMusic;
 	private HashMap<String, AudioPlayer> sfx;
 	
 	private int currentChoice = 0;
@@ -54,10 +55,14 @@ public class GameFinish3State extends GameState {
 		}
 		sfx = new HashMap<String, AudioPlayer>();
 		sfx.put("press", new AudioPlayer("/SFX/menuPressed.mp3"));
-		sfx.put("updown", new AudioPlayer("/SFX/jump.mp3"));
+		sfx.put("updown", new AudioPlayer("/SFX/upDown.mp3"));
 		init();
 	}
 	
+	public void init() {
+		bgMusic = new AudioPlayer("/SFX/gameClear.mp3");
+		bgMusic.play();
+	}
 	
 	public void update() {
 		bg.update();
@@ -176,10 +181,4 @@ public class GameFinish3State extends GameState {
 	
 	public void keyReleased(int k) {}
 
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
 }

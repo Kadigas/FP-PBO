@@ -42,13 +42,6 @@ public class Level2State extends GameState {
 	
 	private static boolean pause = false;
 	
-	private String[] notification = {
-			"Paused",
-			"Press ESC to resume"
-	};
-	
-	private Font font1, font2;
-	
 	public Level2State(GameStateManager gsm) {
 		this.gsm = gsm;
 		init();
@@ -230,7 +223,7 @@ public class Level2State extends GameState {
 		if(eventCount == 1) {
 			player.setDead();
 			player.stop();
-			gsm.setState(GameStateManager.GAMEOVER2STATE);
+			gsm.setState(GameStateManager.GAMEOVERSTATE);
 			bgMusic.close();
 		}
 		if(eventCount == 60) {
