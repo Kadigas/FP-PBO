@@ -114,7 +114,7 @@ public class Clock {
 		try {
 			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream("Resource/Highscore/Time.dat"));
 			outfile.flush();
-			outfile.writeObject(string);
+			outfile.write(minute * 60 + second);
 			outfile.close();
 		}
 		catch (FileNotFoundException e) {

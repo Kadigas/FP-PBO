@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 
 import id.ac.its.squealer.audio.AudioPlayer;
+import id.ac.its.squealer.entity.HighScore;
 import id.ac.its.squealer.tilemap.Background;
 
 public class HighScoreState extends GameState {
@@ -21,7 +22,10 @@ public class HighScoreState extends GameState {
 			"LEVEL 3",
 			"BACK"
 	};
-	private String[] scores;
+	private String[] scores = new String[3];
+	private StringBuilder temp;
+	private HighScore highScore1, highScore2, highScore3;
+	private int[] scoreList = new int[3];
 	
 	public HighScoreState(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -54,12 +58,6 @@ public class HighScoreState extends GameState {
 		// draw bg
 		bg.draw(g);
 		
-		// read stored high score
-		scores = new String[3];
-		scores[0] = getHighScore("Resource/Highscore/Level1.dat");
-		scores[1] = getHighScore("Resource/Highscore/Level2.dat");
-		scores[2] = getHighScore("Resource/Highscore/Level3.dat");
-		
 		// draw title
 		g.setFont(font1);
 		g.setColor(Color.WHITE);
@@ -75,13 +73,44 @@ public class HighScoreState extends GameState {
 				g.drawString(about[i], 145, 220);
 			}
 		}
+		
+		// read and draw stored high score
+		highScore1 = new HighScore(1);
+		highScore2 = new HighScore(2);
+		highScore3 = new HighScore(3);
+		
+		scoreList[0] = highScore1.getHighScore();
+		highScore1.highScoreSet(scoreList[0]);
+		scoreList[1] = highScore2.getHighScore();
+		highScore2.highScoreSet(scoreList[1]);
+		scoreList[2] = highScore3.getHighScore();
+		highScore3.highScoreSet(scoreList[2]);
+		
 		g.setColor(Color.WHITE);
 		for(int i = 0; i < scores.length; i++) {
-			if(scores[i] != null)
-				g.drawString(scores[i], 15, 50 + i * 60);
-			else 
-				g.drawString("-", 15, 80 + i * 60);
+			scores[i] = convertToString(scoreList[i]);
+			g.drawString(scores[i], 15, 80 + i * 60);
 		}
+	}
+	
+	private String convertToString(int input) {
+		temp = new StringBuilder();
+		int score = input;
+		
+		if(score == -100) {
+			temp.append("-");
+			return temp.toString();
+		}
+		
+		if(score < 60) temp.append("00:");
+		else if(score < 600) temp.append("0" + (score / 60) + ":");
+		else temp.append(score / 60);
+		
+		if(score % 60 == 0) temp.append("00");
+		else if(score % 60 < 10) temp.append("0" + (score % 60));
+		else temp.append(score % 60);
+		
+		return temp.toString();
 	}
 	
 	public void keyPressed(int k) {
@@ -93,41 +122,5 @@ public class HighScoreState extends GameState {
 	}
 	
 	public void keyReleased(int k) {}
-	
-	private String getHighScore(String filename) {
-		String temp;
-		if(!new File(filename).exists())
-			storeFileInit(filename);
-		try {
-			System.out.println("test");
-			ObjectInputStream infile = new ObjectInputStream(new FileInputStream(filename));
-			temp = infile.readObject().toString();
-			System.out.println(temp);
-			infile.close();
-			return temp;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	private void storeFileInit(String filename) {
-		try {
-			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream(filename));
-			outfile.flush();
-			outfile.close();
-		}
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 }
