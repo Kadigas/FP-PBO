@@ -5,12 +5,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.nio.*;
-import java.nio.file.Paths;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 import id.ac.its.squealer.audio.AudioPlayer;
+import id.ac.its.squealer.entity.HighScore;
 import id.ac.its.squealer.tilemap.Background;
 
 public class HighScoreState extends GameState {
@@ -25,7 +22,10 @@ public class HighScoreState extends GameState {
 			"LEVEL 3",
 			"BACK"
 	};
-	private String[] scores;
+	private String[] scores = new String[3];
+	private StringBuilder temp;
+	private HighScore highScore1, highScore2, highScore3;
+	private int[] scoreList = new int[3];
 	
 	public HighScoreState(GameStateManager gsm) {
 		this.gsm = gsm;
@@ -58,9 +58,6 @@ public class HighScoreState extends GameState {
 		// draw bg
 		bg.draw(g);
 		
-		// read stored high score
-		//getHighScore();  there is a bug here
-		
 		// draw title
 		g.setFont(font1);
 		g.setColor(Color.WHITE);
@@ -76,6 +73,44 @@ public class HighScoreState extends GameState {
 				g.drawString(about[i], 145, 220);
 			}
 		}
+		
+		// read and draw stored high score
+		highScore1 = new HighScore(1);
+		highScore2 = new HighScore(2);
+		highScore3 = new HighScore(3);
+		
+		scoreList[0] = highScore1.getHighScore();
+		highScore1.highScoreSet(scoreList[0]);
+		scoreList[1] = highScore2.getHighScore();
+		highScore2.highScoreSet(scoreList[1]);
+		scoreList[2] = highScore3.getHighScore();
+		highScore3.highScoreSet(scoreList[2]);
+		
+		g.setColor(Color.WHITE);
+		for(int i = 0; i < scores.length; i++) {
+			scores[i] = convertToString(scoreList[i]);
+			g.drawString(scores[i], 15, 80 + i * 60);
+		}
+	}
+	
+	private String convertToString(int input) {
+		temp = new StringBuilder();
+		int score = input;
+		
+		if(score == -100) {
+			temp.append("-");
+			return temp.toString();
+		}
+		
+		if(score < 60) temp.append("00:");
+		else if(score < 600) temp.append("0" + (score / 60) + ":");
+		else temp.append(score / 60);
+		
+		if(score % 60 == 0) temp.append("00");
+		else if(score % 60 < 10) temp.append("0" + (score % 60));
+		else temp.append(score % 60);
+		
+		return temp.toString();
 	}
 	
 	public void keyPressed(int k) {
@@ -87,27 +122,5 @@ public class HighScoreState extends GameState {
 	}
 	
 	public void keyReleased(int k) {}
-	
-	private void getHighScore() {
-		scores = new String[3];
-		try 
-		{
-			ObjectInputStream level1File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level1.txt"));
-			ObjectInputStream level2File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level2.txt"));
-			ObjectInputStream level3File=new ObjectInputStream(new FileInputStream("/Resource/Highscore/Level3.txt"));
-			
-			scores[0] = level1File.readObject().toString();
-			scores[1] = level2File.readObject().toString();
-			scores[2] = level3File.readObject().toString();
-			
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		System.out.println(scores);
-	}
 	
 }

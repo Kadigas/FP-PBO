@@ -113,7 +113,8 @@ public class Clock {
 	private void storeTime() {
 		try {
 			ObjectOutputStream outfile = new ObjectOutputStream(new FileOutputStream("Resource/Highscore/Time.dat"));
-			outfile.writeObject(string);
+			outfile.flush();
+			outfile.write(minute * 60 + second);
 			outfile.close();
 		}
 		catch (FileNotFoundException e) {
@@ -122,9 +123,5 @@ public class Clock {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public String getTime() {
-		return clock.toString();
 	}
 }
